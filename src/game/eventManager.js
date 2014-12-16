@@ -1,21 +1,25 @@
 define(function(){
-   
+
     var listeners = {},
         eventManager = {};
-    
+
     eventManager.trigger = function(name) {
-        listeners[name][0]();
+        for(var i in listeners[name]){
+            listeners[name][i]["callBack"](listeners[name][i]["context"]);
+        }
     };
-    eventManager.on = function(name, callBack) {
+
+    eventManager.on = function(name, cB, ctx) {
         if  (!(name in listeners)) {
             listeners[name] = [];
         }
-        return listeners[name].push(callBack);
+        return listeners[name].push({callBack: cB, context: ctx});
     };
+
     eventManager.off = function(name, index){
         listeners[name].slice(index, 1);
     };
-    
+
     return eventManager;
-    
+
 });

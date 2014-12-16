@@ -1,60 +1,60 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
 define(function () {
-    
+
     "use strict";
-    
-    function Vector (posX, posY) {
-    
+
+    function Vector2 (posX, posY) {
+
         this.x = posX,
         this.y = posY;
     }
-    
-    Vector.prototype.lengthSquare = function (){
+
+    Vector2.prototype.lengthSquare = function (){
             return (this.x * this.x) + (this.y * this.y);
     }
-    
-        
-    Vector.prototype.length = function(){
+
+
+    Vector2.prototype.length = function(){
         return Math.sqrt(this.lengthSquare()) || 0;
     }
 
-    Vector.prototype.normalize = function(){
+    Vector2.prototype.normalize = function(){
         this.div(this.length());
         return this;
     }
-    
-    Vector.prototype.angle = function(){
+
+    Vector2.prototype.angle = function(){
         return Math.atan2(this.y, this.x);
     }
 
     // Start Rechenoperationen
-    Vector.prototype.add = function(vector){
+    Vector2.prototype.add = function(vector){
         this.x += vector.x;
         this.y += vector.y;
         return this;
     }
 
-    Vector.prototype.sub = function(vector){
+    Vector2.prototype.sub = function(vector){
         this.x -= vector.x;
         this.y -= vector.y;
         return this;
     }
 
-    Vector.prototype.mul = function(d){
+    Vector2.prototype.mul = function(d){
         this.x *= d;
         this.y *= d;
         return this;
     }
 
-    Vector.prototype.div = function(d){
+    Vector2.prototype.div = function(d){
         if(d !== 0) this.x /= d;
         if(d !== 0) this.y /= d;
         return this;
     }
     // Ende Rechenoperationen
-        
-    
-    return Vector;
-    
+
+
+    return Vector2;
+
 });
