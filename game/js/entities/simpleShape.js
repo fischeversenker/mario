@@ -14,7 +14,7 @@ define(['game/js/entity.js', 'game/js/vector.js', 'game/js/input.js'], function 
         this.VELOCITY_DAMP = 20; // Je größer umso langsamer fällt vel ab
         this.sollAngle = 0;
         this.istAngle = 0;
-        this.ANGULAR_DAMP = 5; // Je größer umso langsamer fällt angle  ab
+        this.ANGULAR_DAMP = 3; // Je größer umso langsamer fällt angle  ab
     }
     
     SimpleShape.prototype = Object.create(Entity.prototype, SimpleShape.prototype);
