@@ -1,3 +1,5 @@
+/* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
+/* global define */
 define(['vector2'], function(Vector2){
 
     "use strict";

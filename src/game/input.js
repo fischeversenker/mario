@@ -1,5 +1,5 @@
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
-/*global define */
+/* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
+/* global define */
 define(['eventManager'], function (EventManager){
 
     "use strict";
