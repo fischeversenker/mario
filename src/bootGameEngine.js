@@ -6,14 +6,15 @@
                function( callback ){ window.setTimeout(callback, 1000 / 60);};
     })();
 
-    require.config({
+    var _require = require.config({
+		context: "mario",
         baseUrl: 'src/game',
         paths: {
             jquery: '../../lib/jquery',
         },
     });
 
-    require(['jquery', 'game', 'renderer'], function($, Game, Renderer){
+    _require(['jquery', 'game', 'renderer'], function($, Game, Renderer){
         Renderer.init($('#myCanvas')[0]);
         Game.init();
     });
