@@ -1,4 +1,3 @@
-
     window.requestAnimFrame = (function(){
         return window.requestAnimationFrame       ||
                window.webkitRequestAnimationFrame ||
@@ -13,7 +12,7 @@
         },
     });
 
-    require(['jquery', 'game', 'renderer'], function($, Game, Renderer){
-        Renderer.init($('#myCanvas')[0]);
-        Game.init();
+    require(['jquery', 'gameEngine'], function($, GameEngine){
+        GameEngine.init($('#myCanvas')[0], 'PlayScene');
+        GameEngine.start();
     });

@@ -4,9 +4,9 @@ define(['entity'], function (Entity) {
 
     "use strict";
 
-    function Playground(w, h, color) {
-        Entity.call(this, 0, 0, -1000, w, h);
-        this.color = color;
+    function Playground(args) {
+        Entity.call(this, 0, 0, -1000, args.width, args.height);
+        this.color = args.color;
     }
 
     Playground.prototype = Object.create(Entity.prototype, Playground.prototype);

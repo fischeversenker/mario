@@ -4,10 +4,10 @@ define(['entity', 'vector2', 'input'], function (Entity, Vector2, Input) {
 
     "use strict";
 
-    function CircleShape(x, y, z, w, h, color) {
-        Entity.call(this, x, y, z, w, h, (w > h ? h : w));
+    function CircleShape(args) {
+        Entity.call(this, args.x, args.y, args.z, args.width, args.height, (args.width > args.height ? args.height : args.width));
         this.MAX_SPEED = 0.5;
-        this.color = color;
+        this.color = args.color;
         this.sollVelocity = new Vector2(0, 0);
         this.istVelocity = new Vector2(0, 0);
         this.VELOCITY_DAMP = 0; // Je größer umso langsamer fällt vel ab

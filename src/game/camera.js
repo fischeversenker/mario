@@ -5,16 +5,16 @@ define(['vector2'], function(Vector2){
     "use strict";
     var Camera = {
         pos: new Vector2(0, 0),
-        width:  500,
+        width:  1000,
         height: 500,
-        border: 50,
+        border: 100,
         update: function (timeSpan) {
 
             var playerOutbox = {
-                top: this.Game.Player.pos.y - this.Game.Player.radius,
-                right: this.Game.Player.pos.x + this.Game.Player.radius,
-                bottom: this.Game.Player.pos.y + this.Game.Player.radius,
-                left: this.Game.Player.pos.x - this.Game.Player.radius};
+                top: this.World.Player.pos.y - this.World.Player.radius,
+                right: this.World.Player.pos.x + this.World.Player.radius,
+                bottom: this.World.Player.pos.y + this.World.Player.radius,
+                left: this.World.Player.pos.x - this.World.Player.radius};
 
             var cameraOutbox = {
                 top: this.pos.y - (this.height / 2),
@@ -36,13 +36,15 @@ define(['vector2'], function(Vector2){
             }
 
             if(this.pos.x - (this.width  / 2) < 0) this.pos.x = this.width / 2;
-            if(this.pos.x + (this.width  / 2) > this.Game.World.size.x) this.pos.x = this.Game.World.size.x - this.width / 2;
+            if(this.pos.x + (this.width  / 2) > this.World.width) this.pos.x = this.World.width - this.width / 2;
             if(this.pos.y - (this.height / 2) < 0) this.pos.y = this.height / 2;
-            if(this.pos.y + (this.height / 2) > this.Game.World.size.y) this.pos.y = this.Game.World.size.y - this.height / 2;
+            if(this.pos.y + (this.height / 2) > this.World.height) this.pos.y = this.World.height - this.height / 2;
 
         },
-        init: function (game){
-            this.Game = game;
+        init: function (world){
+            this.World = world;
+            this.pos.x = this.World.Player.pos.x;
+            this.pos.y = this.World.Player.pos.y;
         },
     }
 

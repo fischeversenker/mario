@@ -4,9 +4,9 @@ define(['entity'], function (Entity) {
 
     "use strict";
 
-    function StaticShape(x, y, z, w, h, color) {
-        Entity.call(this, x, y, z, w, h, (w > h ? h : w));
-        this.color = color;
+    function StaticShape(args) {
+        Entity.call(this, args.x, args.y, args.z, args.width, args.height, (args.width > args.height ? args.height : args.width));
+        this.color = args.color;
     }
 
     StaticShape.prototype = Object.create(Entity.prototype, StaticShape.prototype);

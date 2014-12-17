@@ -4,10 +4,10 @@ define(['entity', 'vector2', 'input'], function (Entity, Vector2, Input) {
 
     "use strict";
 
-    function SimpleShape(x, y, z, w, h, color) {
-        Entity.call(this, x, y, z, w, h, (w > h ? h : w));
+    function SimpleShape(args) {
+        Entity.call(this, args.x, args.y, args.z, args.width, args.height, (args.width > args.height ? args.height : args.width));
         this.MAX_SPEED = 1;
-        this.color = color;
+        this.color = args.color;
         this.sollVelocity = new Vector2(0, 0);
         this.istVelocity = new Vector2(0, 0);
         this.VELOCITY_DAMP = 5; // Je größer umso langsamer fällt vel ab
@@ -28,8 +28,9 @@ define(['entity', 'vector2', 'input'], function (Entity, Vector2, Input) {
             (Input.isPressed(Input.LEFT) ? -1 : 0) + (Input.isPressed(Input.RIGHT) ? 1 : 0),
             (Input.isPressed(Input.UP) ? -1 : 0) + (Input.isPressed(Input.DOWN) ? 1 : 0));
 
+//        i.normalize(); // AUSPROBIEREN!
         if(i.lengthSquare() !== 0){
-            this.sollVelocity.add(i.div(this.VELOCITY_DAMP));
+            this.sollVelocity.add(new Vector2(i.x, i.y).div(this.VELOCITY_DAMP));
         }else{
             this.sollVelocity.sub(new Vector2(this.sollVelocity.x, this.sollVelocity.y).div(this.VELOCITY_DAMP)); // Jedes Mal was von der Geschwindigkeit abziehen
         }
@@ -56,7 +57,6 @@ define(['entity', 'vector2', 'input'], function (Entity, Vector2, Input) {
             this.pos.add(new Vector2(this.istVelocity.x, this.istVelocity.y).mul(time));
         }
 
-        //
         // Blickrichtungberechnung
 
         var delta = {abs: Math.abs(this.sollAngle - this.istAngle),

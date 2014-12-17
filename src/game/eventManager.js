@@ -2,6 +2,8 @@
 /* global define */
 define(function(){
 
+    "use strict";
+
     var listeners = {},
         eventManager = {};
 

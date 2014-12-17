@@ -35,6 +35,9 @@ define(['eventManager'], function (EventManager){
             }
             EventManager.trigger('pp');
             e.preventDefault();
+        }else if(e.keyCode === 77){
+            EventManager.trigger('m');
+            e.preventDefault();
         }
     };
 
