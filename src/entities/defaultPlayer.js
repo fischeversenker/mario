@@ -1,11 +1,24 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['entities/default/entity', 'physics/vector2', 'events/input'], function (Entity, Vector2, Input) {
+define(function (require) {
 
     "use strict";
 
-    function SimpleShape(args) {
+    var Entity = require('defaultEntities/entity');
+    var Vector2 = require('physics/vector2');
+    var Input = require('events/input');
+
+    function Player(args) {
+        console.log(args);
         Entity.call(this, args.x, args.y, args.z, args.width, args.height, (args.width > args.height ? args.height : args.width));
+
+        this.pos = new Vector2(args.x || 0, args.y || 0);
+        this.z = args.z;
+        this.velocity = new Vector2(0, 0);
+        this.width = args.width || 100;
+        this.height = args.height || 100;
+        this.radius = (args.width > args.height ? args.height : args.width) || 50;
+
         this.MAX_SPEED = 1;
         this.color = args.color;
         this.sollVelocity = new Vector2(0, 0);
@@ -16,11 +29,11 @@ define(['entities/default/entity', 'physics/vector2', 'events/input'], function 
         this.ANGULAR_DAMP = 10; // Je größer umso langsamer fällt angle  ab
     }
 
-    SimpleShape.prototype = Object.create(Entity.prototype, SimpleShape.prototype);
+    Player.prototype = Object.create(Entity.prototype, Player.prototype);
 
-    SimpleShape.prototype.constructor = SimpleShape;
+    Player.prototype.constructor = Player;
 
-    SimpleShape.prototype.update = function (time) {
+    Player.prototype.update = function (time) {
 
         // Positionsberechnung
 
@@ -99,7 +112,7 @@ define(['entities/default/entity', 'physics/vector2', 'events/input'], function 
     }
 
     /* @override */
-    SimpleShape.prototype.render = function(ctx) {
+    Player.prototype.render = function(ctx) {
         // var sector = Math.floor(((this.angle * 360) / (2 * Math.PI) + 180 + 45) / 90); // Gibt Sektor der Richtung: 2 ist 45 bis -45 ist Rechts bspw.
         ctx.save();
         ctx.translate(this.pos.x, this.pos.y);
@@ -109,6 +122,6 @@ define(['entities/default/entity', 'physics/vector2', 'events/input'], function 
         ctx.restore();
     };
 
-    return SimpleShape;
+    return Player;
 
 });

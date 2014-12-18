@@ -26,6 +26,7 @@ define(function(require, exports, module) {
 		for (var key in api) {
 			API[key] = api[key];
 		}
+        API.init();
 		triggerReady();
     });
 
@@ -37,13 +38,14 @@ define(function(require, exports, module) {
 			readyListener[i]();
 		}
 	}
+
 	function onReady (callBack) {
 		if (EngineReady) {
 			callBack();
 		} else {
 			readyListener.push(callBack);
 		}
-	};
+	}
 
 	API.onReady = onReady;
 	module.exports = API;

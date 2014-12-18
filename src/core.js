@@ -1,57 +1,74 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
-/* global define */
-define(['events/eventManager', 'renderer/renderer', 'events/input'], function(EventManager, Renderer, Input){
+/* global define, requestAnimFrame, require */
+define(['events/eventManager', 'events/input', 'worlds/gameWorld', 'renderer/renderer'], function(EventManager, Input, GameWorld, Renderer){
 
     var Core = {
         running: false,
         lastTime: new Date().getTime(),
+        DOM: {},
+        World: {},
+        mainLoopListeners: [],
 
-        FRAME_TIME: 1000 / 60,
+        FRAME_TIME: 100,
 
-        start: function(ctx){
-            this.running = true;
-            this.lastTime = new Date().getTime();
-            if(ctx !== null) this.mainloop(ctx);
+        start: function(){
+            Core.running = true;
+            Core.lastTime = new Date().getTime();
+            Core.mainloop();
         },
 
         stop: function(){
-            this.running = false;
+            Core.running = false;
             Renderer.renderPause();
         },
 
-        mainloop: function(ctx) {
-            if(!ctx.running) return;
-            requestAnimFrame(function(){ctx.mainloop(ctx);});
-            if(time - this.lastTime > FRAME_TIME){
-                Renderer.render();
+        mainloop: function() {
+            var time = new Date().getTime();
+            if(!Core.running) {
+                return;
+            }
+            requestAnimFrame(function(){Core.mainloop();});
+
+            if(Core.World !== null){
+                if(time - Core.lastTime > Core.FRAME_TIME){
+                    time = new Date().getTime();
+                    Renderer.render();
+                    Core.lastTime = time;
+                }
+//                Core.World.update(time - Core.lastTime);
+//                Core.update(time - Core.lastTime);
             }
 
-            if(ctx.scene !== null){
-                var time = new Date().getTime();
-
-                Renderer.render();
-
-                ctx.scene.update(time - ctx.lastTime);
-            }
-
-            ctx.lastTime = time;
         },
 
-        changeScene: function(scene){
-            SceneManager.changeScene(scene);
-            this.scene = SceneManager.currScene;
-            Renderer.setScene(this.scene);
+        createWorld: function(){
+            return new GameWorld();
         },
+
+        setActiveWorld: function(world){
+            this.World = world;
+        },
+
+        registerTicker: function(id, callback){
+            this.mainLoopListeners.push({id: id, callback: callback});
+        },
+
+        setDOM: function(dom){
+            this.DOM = dom;
+            Renderer.setDOM(dom);
+        },
+
 
         init: function() {
-
-            EventManager.on('pp', function(ctx){
-                if(ctx.running){
-                    ctx.stop();
+            Renderer.init(Core);
+            EventManager.on('pp', function(){
+                if(Core.running){
+                    Core.stop();
                 }else{
-                    ctx.start(ctx);
+                    Core.start();
                 }
             }, this);
+
 
 //            EventManager.on('m', function(ctx){
 //                if(ctx.scene.type !== 'MenuScene'){
@@ -61,13 +78,6 @@ define(['events/eventManager', 'renderer/renderer', 'events/input'], function(Ev
 //                    ctx.changeScene(ctx.previousScene);
 //                }
 //            }, this);
-
-            SceneManager.currScene.init();
-            this.scene = SceneManager.currScene;
-
-            Renderer.setScene(SceneManager.currScene);
-
-            this.start(this);
         },
 
     };

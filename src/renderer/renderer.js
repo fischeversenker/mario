@@ -1,31 +1,39 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /* global define */
-define(['physics/vector2'], function(Vector2){
+define(function(require){
 
     "use strict";
 
     var Renderer = {
         _canvas: null,
         _ctx: null,
-        Scene: null,
+        Core: {},
 
-        render: function() {
-            this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
-            this._ctx.save();
-            this._ctx.translate(-(this.Scene.Camera.pos.x - this.Scene.Camera.width / 2), -(this.Scene.Camera.pos.y - this.Scene.Camera.height / 2));
-            this.Scene.render(this._ctx);
-            this._ctx.restore();
+        render: function() {/*
+            Core.DOM.getContext("2d").clearRect(0, 0, Core.DOM.width, Core.DOM.height);
+            Core.DOM.getContext("2d").save();
+            Core.DOM.getContext("2d").fillStyle = '#0f0';
+            while(Core.World.next()){
+                console.log(Core.World.getCurrent());
+                Core.World.getCurrent().render(Core.DOM.getContext("2d"));
+            }
+            Core.DOM.getContext("2d").fillRect(0, 0, Core.DOM.width, Core.DOM.height);
+            Core.DOM.getContext("2d").restore();*/
+            while(this.Core.World.next()){
+                this.Core.World.getCurrent().render(this._ctx);
+            }
         },
         renderPause: function() {
-            this._ctx.clearRect(0,0,this._canvas.width, this._canvas.height);
+            Core.DOM.getContext("2d").clearRect(0,0,Core.DOM.width, Core.DOM.height);
         },
 
-        init: function (canvas) {
-            this._canvas = canvas;
-            this._ctx = canvas.getContext("2d");
+        setDOM: function (canvas) {
+            this._canvas = canvas[0];
+            this._ctx = canvas[0].getContext("2d");
         },
-        setScene: function(scene){
-            this.Scene = scene;
+
+        init: function(core) {
+            this.Core = core;
         },
     };
 

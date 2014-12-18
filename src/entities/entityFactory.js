@@ -1,6 +1,10 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['entities/default/entity', 'entities/default/simpleShape', 'entities/default/circleShape', 'entities/default/staticShape', 'entities/default/playground'], function (Entity, SimpleShape, CircleShape, StaticShape, Playground) {
+define(['defaultEntities/entity',
+        'defaultEntities/simpleShape',
+        'defaultEntities/circleShape',
+        'defaultEntities/staticShape',
+        'defaultEntities/playground'], function (Entity, SimpleShape, CircleShape, StaticShape, Playground) {
 
     "use strict";
 
@@ -18,7 +22,7 @@ define(['entities/default/entity', 'entities/default/simpleShape', 'entities/def
          *  @return entity class pointer
          */
         getEntityClass: function(name) {
-            return SimpleShape;
+            return Entities[name];
         },
         /*
          *  @param {string|object}+ arguments
@@ -27,24 +31,38 @@ define(['entities/default/entity', 'entities/default/simpleShape', 'entities/def
         createEntity: function () {
             var i = 0,
                 inheritChain = [],
-                newClass;
+                base,
+                args = {},
+                NewEntity = {};
 
             for (; i < arguments.length; i++) {
                 var currArg;
                 if(typeof arguments[i] === "string"){
-                    var clas = this.getEntityClass(Entities[arguments[i]]);
-                    currArg = clas.prototype;
+                    base = this.getEntityClass(arguments[i]);
+                    currArg = base.prototype;
                 } else {
                     currArg = arguments[i];
                 }
-                if(i > 0) {
-                    clas.prototype._parent = inheritChain[i - 1];
-                }
                 inheritChain.push(currArg);
+                if(base !== null) {base.prototype._parent = inheritChain[i - 1] || new Entities.Entity();}
             }
-            newClass = Object.create.apply(null, inheritChain);
-            newClass._parent = inheritChain[inheritChain.length - 1]
-            return newClass;
+
+            if(base === Entities.SimpleShape){
+                args = {x: 50,
+                        y: 150,
+                        width: 100,
+                        height: 200,
+                        color: '#f0f'};
+                NewEntity = new base(args);
+            }
+
+            NewEntity.prototype = Object.create.apply(base, inheritChain);
+            NewEntity.prototype._parent = inheritChain[inheritChain.length - 1];
+//            NewEntity.prototype.constructor = NewEntity;
+
+
+
+            return NewEntity;
         },
     };
 

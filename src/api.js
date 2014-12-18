@@ -27,16 +27,15 @@ define(['renderer/renderer', 'core', 'entities/entityFactory', 'events/eventMana
         },
 
         start: function(){
-            Game.start(Game);
+            Core.start();
         },
 
         stop: function(){
-            Game.stop();
+            Core.stop();
         },
 
         init: function(canvas){
-            Renderer.init(canvas);
-            Game.init();
+            Core.init();
         },
     };
 

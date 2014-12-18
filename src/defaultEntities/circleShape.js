@@ -1,8 +1,12 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['entities/default/entity', 'physics/vector2', 'events/input'], function (Entity, Vector2, Input) {
+define(function (require) {
 
     "use strict";
+
+    var Entity = require('defaultEntities/entity');
+    var Vector2 = require('physics/vector2');
+    var Input = require('events/input');
 
     function CircleShape(args) {
         Entity.call(this, args.x, args.y, args.z, args.width, args.height, (args.width > args.height ? args.height : args.width));

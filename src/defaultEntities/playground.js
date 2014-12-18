@@ -1,8 +1,10 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['entities/default/entity', 'physics/vector2', 'events/input'], function (Entity) {
+define(function (require) {
 
     "use strict";
+
+    var Entity = require('defaultEntities/entity');
 
     function Playground(args) {
         Entity.call(this, 0, 0, -1000, args.width, args.height);

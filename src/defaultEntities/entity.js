@@ -1,10 +1,10 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['physics/vector2'], function (Vector2) {
+define(function (require) {
 
     "use strict";
 
-//    var Vector2 = require('vector2');
+    var Vector2 = require('physics/vector2');
 
     function Entity(x, y, z, width, height, r) {
         this.pos = new Vector2(x || 0, y || 0);
