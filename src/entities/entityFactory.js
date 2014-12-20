@@ -1,14 +1,16 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['defaultEntities/entity',
-        'defaultEntities/simpleShape',
-        'defaultEntities/circleShape',
-        'defaultEntities/staticShape',
-        'defaultEntities/playground'], function (Entity, SimpleShape, CircleShape, StaticShape, Playground) {
+define(['entities/default/entity',
+        'entities/default/shapes/simpleShape',
+        'entities/default/shapes/circleShape',
+        'entities/default/shapes/staticShape',
+        'entities/default/player',
+        'entities/default/playground'], function (Entity, SimpleShape, CircleShape, StaticShape, Player, Playground) {
 
     "use strict";
 
     var Entities = {
+            Player: Player,
             Entity: Entity,
             SimpleShape: SimpleShape,
             CircleShape: CircleShape,
@@ -30,39 +32,41 @@ define(['defaultEntities/entity',
          */
         createEntity: function () {
             var i = 0,
-                inheritChain = [],
-                base,
-                args = {},
+                // inheritChain = [],
+                opts = {},
+                Base,
                 NewEntity = {};
 
             for (; i < arguments.length; i++) {
-                var currArg;
+                // var currArg;
                 if(typeof arguments[i] === "string"){
-                    base = this.getEntityClass(arguments[i]);
-                    currArg = base.prototype;
+                    Base = this.getEntityClass(arguments[i]);
                 } else {
-                    currArg = arguments[i];
+                    opts = arguments[i];
                 }
-                inheritChain.push(currArg);
-                if(base !== null) {base.prototype._parent = inheritChain[i - 1] || new Entities.Entity();}
+                // inheritChain.push(currArg);
+                // if(base !== null) {base.prototype._parent = inheritChain[i - 1] || new Entities.Entity();}
             }
-
-            if(base === Entities.SimpleShape){
-                args = {x: 50,
-                        y: 150,
-                        width: 100,
-                        height: 200,
-                        color: '#f0f'};
-                NewEntity = new base(args);
+            
+            if(opts === null){
+                opts = {x: 250,
+                    y: 250,
+                    width: 100,
+                    height: 200,
+                    color: '#f0f'};
             }
+            NewEntity = new Base(opts);
+            NewEntity.prototype = Base.prototype;
+            // NewEntity.prototype = Object.create.apply(base, inheritChain);
+            // NewEntity.prototype._parent = inheritChain[inheritChain.length - 1];
+            NewEntity.prototype.constructor = NewEntity;
 
-            NewEntity.prototype = Object.create.apply(base, inheritChain);
-            NewEntity.prototype._parent = inheritChain[inheritChain.length - 1];
-//            NewEntity.prototype.constructor = NewEntity;
 
-
-
-            return NewEntity;
+            if(NewEntity !== null){
+                return NewEntity;
+            } else {
+                return false;
+            }
         },
     };
 

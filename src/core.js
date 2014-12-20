@@ -1,7 +1,7 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
-/* global define, requestAnimFrame, require */
-define(['events/eventManager', 'events/input', 'worlds/gameWorld', 'renderer/renderer'], function(EventManager, Input, GameWorld, Renderer){
-
+/* global define, requestAnimFrame */
+define(['events/eventManager', 'events/input', 'worlds/gameWorld', 'renderer/renderer', 'entities/EntityFactory', 'physics/physics'], function(EventManager, Input, GameWorld, Renderer, EntityFactory, Physics) {
+    
     var Core = {
         running: false,
         lastTime: new Date().getTime(),
@@ -9,7 +9,7 @@ define(['events/eventManager', 'events/input', 'worlds/gameWorld', 'renderer/ren
         World: {},
         mainLoopListeners: [],
 
-        FRAME_TIME: 100,
+        FRAME_TIME: 500,
 
         start: function(){
             Core.running = true;
@@ -24,6 +24,7 @@ define(['events/eventManager', 'events/input', 'worlds/gameWorld', 'renderer/ren
 
         mainloop: function() {
             var time = new Date().getTime();
+            EventManager.trigger("tick");
             if(!Core.running) {
                 return;
             }
@@ -35,22 +36,24 @@ define(['events/eventManager', 'events/input', 'worlds/gameWorld', 'renderer/ren
                     Renderer.render();
                     Core.lastTime = time;
                 }
-//                Core.World.update(time - Core.lastTime);
-//                Core.update(time - Core.lastTime);
+                Core.World.update(time - Core.lastTime);
             }
-
         },
 
         createWorld: function(){
-            return new GameWorld();
+            var w = new GameWorld(EntityFactory.createEntity('Playground', {color: '#53f'}));
+            Physics.setWorld(w);
+            return w;
         },
 
         setActiveWorld: function(world){
             this.World = world;
+            Renderer.setWorld(this.World);
         },
 
-        registerTicker: function(id, callback){
-            this.mainLoopListeners.push({id: id, callback: callback});
+        registerTicker: function(id, callback, ctx){
+            this.mainLoopListeners.push(id);
+            EventManager.on("tick", callback, ctx);
         },
 
         setDOM: function(dom){
@@ -60,7 +63,7 @@ define(['events/eventManager', 'events/input', 'worlds/gameWorld', 'renderer/ren
 
 
         init: function() {
-            Renderer.init(Core);
+            Input.init();
             EventManager.on('pp', function(){
                 if(Core.running){
                     Core.stop();

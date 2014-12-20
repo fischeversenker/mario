@@ -1,6 +1,6 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /* global define */
-define(['renderer/renderer', 'core', 'entities/entityFactory', 'events/eventManager'], function(Renderer, Core, EntityFactory, EventManager){
+define(['renderer/renderer', 'core', 'entities/entityFactory', 'events/eventManager', 'physics/physics'], function(Renderer, Core, EntityFactory, EventManager, Physics){
 
     "use strict";
 
@@ -34,7 +34,7 @@ define(['renderer/renderer', 'core', 'entities/entityFactory', 'events/eventMana
             Core.stop();
         },
 
-        init: function(canvas){
+        init: function(){
             Core.init();
         },
     };

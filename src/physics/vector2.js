@@ -1,12 +1,12 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define([],function () {
+define(function () {
 
     "use strict";
 
     function Vector2 (posX, posY) {
 
-        this.x = posX,
+        this.x = posX;
         this.y = posY;
     }
 

@@ -1,5 +1,5 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
-/* global define */
+/* global define, $, document */
 define(['events/eventManager'], function (EventManager){
 
     "use strict";
@@ -49,7 +49,7 @@ define(['events/eventManager'], function (EventManager){
         this.listen = true;
         $(document).keydown(this.keydown.bind(this));
         $(document).keyup(this.keyup.bind(this));
-    }
+    };
 
     return new Input();
 

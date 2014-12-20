@@ -7,24 +7,17 @@ define(function(require){
     var Renderer = {
         _canvas: null,
         _ctx: null,
-        Core: {},
+        World: {},
 
-        render: function() {/*
-            Core.DOM.getContext("2d").clearRect(0, 0, Core.DOM.width, Core.DOM.height);
-            Core.DOM.getContext("2d").save();
-            Core.DOM.getContext("2d").fillStyle = '#0f0';
-            while(Core.World.next()){
-                console.log(Core.World.getCurrent());
-                Core.World.getCurrent().render(Core.DOM.getContext("2d"));
-            }
-            Core.DOM.getContext("2d").fillRect(0, 0, Core.DOM.width, Core.DOM.height);
-            Core.DOM.getContext("2d").restore();*/
-            while(this.Core.World.next()){
-                this.Core.World.getCurrent().render(this._ctx);
+        render: function() {
+            this.World.render(this._ctx);
+            while(this.World.next()){
+                this.World.getCurrent().render.call(this.World.getCurrent(), this._ctx);
             }
         },
+        
         renderPause: function() {
-            Core.DOM.getContext("2d").clearRect(0,0,Core.DOM.width, Core.DOM.height);
+            
         },
 
         setDOM: function (canvas) {
@@ -32,8 +25,12 @@ define(function(require){
             this._ctx = canvas[0].getContext("2d");
         },
 
-        init: function(core) {
-            this.Core = core;
+        setWorld: function (world){
+            this.World = world;
+        },
+        
+        init: function() {
+            
         },
     };
 
