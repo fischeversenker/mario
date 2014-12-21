@@ -1,11 +1,13 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['entities/default/entity',
+define([
+    'entities/default/entity',
         'entities/default/shapes/simpleShape',
         'entities/default/shapes/circleShape',
         'entities/default/shapes/staticShape',
         'entities/default/player',
-        'entities/default/playground'], function (Entity, SimpleShape, CircleShape, StaticShape, Player, Playground) {
+        'entities/default/playground'
+], function (Entity, SimpleShape, CircleShape, StaticShape, Player, Playground) {
 
     "use strict";
 
@@ -30,40 +32,31 @@ define(['entities/default/entity',
          *  @param {string|object}+ arguments
          *  @return inherited Object with requested inheritChain
          */
-        createEntity: function () {
+        inheritFrom: function () {
             var i = 0,
-                // inheritChain = [],
-                opts = {},
-                Base,
+                inheritChain = [],
+                base,
                 NewEntity = {};
 
             for (; i < arguments.length; i++) {
-                // var currArg;
+                var currArg;
                 if(typeof arguments[i] === "string"){
-                    Base = this.getEntityClass(arguments[i]);
+                    console.log(arguments);
+                    base = this.getEntityClass(arguments[i]).prototype;
+                    currArg = base;
                 } else {
-                    opts = arguments[i];
+                    currArg = arguments[i];
                 }
-                // inheritChain.push(currArg);
-                // if(base !== null) {base.prototype._parent = inheritChain[i - 1] || new Entities.Entity();}
+                inheritChain.push(currArg);
             }
             
-            if(opts === null){
-                opts = {x: 250,
-                    y: 250,
-                    width: 100,
-                    height: 200,
-                    color: '#f0f'};
-            }
-            NewEntity = new Base(opts);
-            NewEntity.prototype = Base.prototype;
-            // NewEntity.prototype = Object.create.apply(base, inheritChain);
-            // NewEntity.prototype._parent = inheritChain[inheritChain.length - 1];
+            NewEntity.prototype = Object.create.apply(base, inheritChain);
             NewEntity.prototype.constructor = NewEntity;
+            NewEntity.prototype._parent = inheritChain[inheritChain.length - 1];
 
 
             if(NewEntity !== null){
-                return NewEntity;
+                return NewEntity.prototype;
             } else {
                 return false;
             }

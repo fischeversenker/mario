@@ -6,16 +6,15 @@ define(function (require) {
 
     var Vector2 = require('physics/vector2');
 
-    function Entity(x, y, z, width, height, radius) {
+    function Entity(args) {
         if(arguments.length === 0) return false;
-        
-        this.pos = new Vector2(x || 0, y || 0);
-        this.z = z;
+        this.pos = new Vector2(args.x || 0, args.z || 0);
+        this.z = args.z;
         this.velocity = new Vector2(0, 0);
-        this.width = width || 100;
-        this.height = height || 100;
-        this.radius = radius || 50;
-        this.color = "#000000";
+        this.width = args.width || 100;
+        this.height = args.height || 100;
+        this.radius = (args.width > args.height ? args.height : args.width) || 50;
+        this.color = args.color;
     }
 
     Entity.prototype.update = function(time) {

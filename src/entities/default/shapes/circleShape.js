@@ -1,22 +1,19 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
-/*global define */
-define(function (require) {
+/*global define, require */
+define(['core', 'entities/default/entity', 'require'], function (Core, Entity, require) {
 
     "use strict";
 
-    var Entity = require('entities/default/entity');
-    var Vector2 = require('physics/vector2');
 
     function CircleShape(args) {
-        Entity.call(this, args.x, args.y, args.z, args.width, args.height, (args.width > args.height ? args.height : args.width));
-        this.color = args.color;
+        Entity.apply(this, args);
+        this._parent = Entity.prototype;
     }
 
     CircleShape.prototype = Object.create(Entity.prototype, CircleShape.prototype);
-
     CircleShape.prototype.constructor = CircleShape;
 
-    CircleShape.prototype.update = function (time) {
+    CircleShape.prototype.update = function (timeSpan) {
 
         // Positionsberechnung
         

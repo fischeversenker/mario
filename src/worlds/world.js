@@ -4,26 +4,23 @@ define(function (require) {
 
     "use strict";
 
-    function GameWorld(pg) {
+    function World() {
         this.entityList = [];
         this.length = this.entityList.length;
         this.current = -1;
         this.width = 1000;
         this.height = 1000;
         this.Player = {};
-        this.Playground = pg;
-
     }
 
-    GameWorld.prototype.addEntity = function(entitiy){
+    World.prototype.addEntity = function(entitiy){
         this.length++;
         this.entityList.push(entitiy);
-        this.sort('z');
+        this.sort();
         return this.entityList;
     };
 
-    GameWorld.prototype.update = function(time){
-
+    World.prototype.update = function(time){
 
         while(this.next()){
             var el = this.getCurrent();
@@ -37,29 +34,31 @@ define(function (require) {
         }
     };
 
-    GameWorld.prototype.render = function (ctx) {
-        if(this.Playground !== null) this.Playground.render(ctx);
+    World.prototype.render = function (ctx) {
+//        if(this.Playground !== null)
+            // this.Playground.render(ctx);
     };
-    
-    GameWorld.prototype.setPlayer = function(player){
+
+    World.prototype.setPlayer = function(player){
         this.addEntity(player);
         this.Player = player;
     };
 
-    GameWorld.prototype.sort = function(){
+    World.prototype.sort = function(){
         this.entityList = qsortRec(this.entityList);
     };
 
     /*iterator*/
-    GameWorld.prototype.next = function() {
+    World.prototype.next = function() {
         this.current++;
         if(this.current < this.entityList.length){
-          return true;
+            return true;
         }
         this.current = -1;
         return false;
     };
-    GameWorld.prototype.getCurrent = function() {
+
+    World.prototype.getCurrent = function() {
        return this.entityList[this.current];
     };
 
@@ -76,5 +75,5 @@ define(function (require) {
         return qsortRec(left).concat(pivot, qsortRec(right));
     }
 
-    return GameWorld;
+    return World;
 });

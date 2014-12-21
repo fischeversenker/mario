@@ -1,21 +1,18 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(function (require) {
+define(['core', 'entities/default/entity'], function (Core, Entity) {
 
     "use strict";
 
-    var Entity = require('entities/default/entity');
-
     function StaticShape(args) {
-        Entity.call(this, args.x, args.y, args.z, args.width, args.height, (args.width > args.height ? args.height : args.width));
-        this.color = args.color;
+        Entity.apply(this, args);
+        this._parent = Entity.prototype;
     }
 
-    StaticShape.prototype = Object.create(Entity.prototype, StaticShape.prototype);
+	StaticShape.prototype = Object.create(Entity.prototype, StaticShape.prototype);
+	StaticShape.prototype.constructor = StaticShape;
 
-    StaticShape.prototype.constructor = StaticShape;
-
-    StaticShape.prototype.update = function (time) {
+    StaticShape.prototype.update = function (timeSpan) {
         //
     };
 
