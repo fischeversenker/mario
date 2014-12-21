@@ -11,9 +11,6 @@ define(function(require){
 
         render: function() {
             this.World.render(this._ctx);
-            while (this.World.next()) {
-                this.World.getCurrent().render.call(this.World.getCurrent(), this._ctx);
-            }
         },
         
         renderPause: function() {

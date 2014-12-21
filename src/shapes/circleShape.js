@@ -1,6 +1,6 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define, require */
-define(['core', 'entities/default/entity', 'require'], function (Core, Entity, require) {
+define(function () {
 
     "use strict";
 
@@ -16,7 +16,7 @@ define(['core', 'entities/default/entity', 'require'], function (Core, Entity, r
     CircleShape.prototype.update = function (timeSpan) {
 
         // Positionsberechnung
-        
+
         //
     };
 

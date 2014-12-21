@@ -9,12 +9,8 @@ define(function (require) {
     function Entity(args) {
         if(arguments.length === 0) return false;
         this.pos = new Vector2(args.x || 0, args.z || 0);
-        this.z = args.z;
         this.velocity = new Vector2(0, 0);
-        this.width = args.width || 100;
-        this.height = args.height || 100;
         this.radius = (args.width > args.height ? args.height : args.width) || 50;
-        this.color = args.color;
     }
 
     Entity.prototype.update = function(time) {
@@ -27,11 +23,6 @@ define(function (require) {
         ctx.fillStyle = this.color;
         ctx.fillRect(-this.getCenter().x, -this.getCenter().y, this.width, this.height);
         ctx.restore();
-    };
-
-    Entity.prototype.getCenter = function (){
-        return new Vector2(this.width / 2, this.height / 2);
-
     };
 
     return Entity;

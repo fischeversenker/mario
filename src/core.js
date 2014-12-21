@@ -1,6 +1,6 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /* global define, requestAnimFrame */
-define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/renderer', 'entities/entityFactory', 'physics/physics'], function(EventManager, Input, World, Renderer, EntityFactory, Physics) {
+define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/renderer', 'entities/entityManager', 'physics/physics'], function(EventManager, Input, World, Renderer, EntityManager, Physics) {
 
     "use strict";
     
@@ -10,7 +10,7 @@ define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/rendere
         DOM: {},
         World: {},
         mainLoopListeners: [],
-        FRAME_TIME: 1000,
+        FRAME_TIME: 500,
 
         start: function(){
             Core.running = true;
@@ -42,7 +42,7 @@ define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/rendere
         },
 
         createWorld: function(){
-            var w = new World(); // EntityFactory.inerhitFrom('Playground', {color: '#53f'})
+            var w = new World();
             Physics.setWorld(w);
             return w;
         },
@@ -62,6 +62,22 @@ define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/rendere
             Renderer.setDOM(dom);
         },
 
+
+        getEntityManager: function(){
+            return EntityManager;
+        },
+
+        getEventManager: function(){
+            return EventManager;
+        },
+
+        getRenderer: function(){
+            return Renderer;
+        },
+
+        getPhysics: function(){
+            return Physics;
+        },
 
         init: function() {
 

@@ -1,23 +1,15 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
 define([
-    'entities/default/entity',
-        'entities/default/shapes/simpleShape',
-        'entities/default/shapes/circleShape',
-        'entities/default/shapes/staticShape',
+        'entities/default/entity',
         'entities/default/player',
-        'entities/default/playground'
-], function (Entity, SimpleShape, CircleShape, StaticShape, Player, Playground) {
+], function (Entity, Player) {
 
     "use strict";
 
     var Entities = {
             Player: Player,
-            Entity: Entity,
-            SimpleShape: SimpleShape,
-            CircleShape: CircleShape,
-            StaticShape: StaticShape,
-            Playground: Playground };
+            Entity: Entity,};
 
     var EntityFactory = {
         /*  muss nich unbedingt in die api ... man soll ja lieber createEntity benutzten
@@ -41,7 +33,6 @@ define([
             for (; i < arguments.length; i++) {
                 var currArg;
                 if(typeof arguments[i] === "string"){
-                    console.log(arguments);
                     base = this.getEntityClass(arguments[i]).prototype;
                     currArg = base;
                 } else {

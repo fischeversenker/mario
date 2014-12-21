@@ -21,13 +21,6 @@ define(function(require, exports, module) {
     });
 
     req(['jquery', 'api'], function($, api){
-		// TO MOVE
-        // GameEngine.init($('#myCanvas')[0], 'PlayScene');
-        // GameEngine.start();
-
-        console.log("as");
-
-
 		for (var key in api) {
 			API[key] = api[key];
 		}

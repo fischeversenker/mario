@@ -1,13 +1,13 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /* global define */
-define(['renderer/renderer', 'core', 'entities/entityFactory', 'events/eventManager', 'physics/physics'], function(Renderer, Core, EntityFactory, EventManager, Physics){
+define(['renderer/renderer', 'core', 'entities/entityManager', 'events/eventManager', 'physics/physics'], function(Renderer, Core, EntityManager, EventManager, Physics){
 
     "use strict";
 
     var API = {
 
-        getEntityFactory: function(){
-            return EntityFactory;
+        getEntityManager: function(){
+            return EntityManager;
         },
 
         getEventManager: function(){
