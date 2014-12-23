@@ -5,7 +5,6 @@ define(function(require, exports, module){
 	var Vector2D	= require('physics/vector2');
 
 	function Camera() {
-		this.matrix = [1,0,0,1,0,0];
 		this.pos = new Vector2D(50, 50);
 		$(document).on('keydown', function(e) {
 			var LEFT = 37;
@@ -32,8 +31,6 @@ define(function(require, exports, module){
 	Camera.prototype.setPos = function(x, y) {
 		this.pos.x = x;
 		this.pos.y = y;
-		this.matrix[4] = x;
-		this.matrix[5] = y;
 	};
 
 	module.exports = Camera;
