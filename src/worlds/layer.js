@@ -1,31 +1,19 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['lists/entityList'], function (EntityList) {
+define(function (require, exports, module) {
 
     "use strict";
 
     function Layer() {
-        this.EntityList = {};
+        this.EntityList = [];
     }
 
-    Layer.prototype.update = function (timeSpan) {
-        this.EntityList.update(timeSpan);
-    };
+    Layer.prototype.update = function () {
 
-    Layer.prototype.render = function (ctx) {
-        this.EntityList.render(ctx);
     };
-
-    Layer.prototype.createAndSetEntityList = function () {
-        var el = new EntityList();
-        this.EntityList = el;
-        return el;
+    Layer.prototype.add = function (entity) {
+		this.EntityList.push(entity);
     };
-
-    Layer.prototype.setEntityList = function (entityList) {
-        this.EntityList = entityList;
-    };
-
-    return Layer;
+    module.exports = Layer;
 
 });

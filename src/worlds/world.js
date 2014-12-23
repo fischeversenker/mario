@@ -1,38 +1,68 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /*global define */
-define(['worlds/layer', 'lists/layerList'], function (Layer, LayerList) {
+define(['worlds/layer', 'renderer/iRenderList'], function (Layer, iRenderList) {
 
     "use strict";
 
     function World() {
-        this.layerLists = [];
-        this.currentLayer = 0;
+		this.layers = [];
+		this._layerCursor = 0;
+		this._entityCursor = -1;
     }
 
-    World.prototype.update = function(timeSpan){
-        if(this.layerLists[this.currentLayer] !== null){
-            this.layerLists[this.currentLayer].update(timeSpan);
-        }
-    };
+    World.prototype = Object.create(iRenderList.prototype, World.prototype);
 
-    World.prototype.render = function (ctx) {
-        if(this.layerLists[this.currentLayer] !== null){
-            this.layerLists[this.currentLayer].render(ctx);
-        }
-    };
+    World.prototype.constructor = World;
 
-    World.prototype.createAndAddLayerList = function () {
-        var LL = new LayerList();
-        this.layerLists.push(LL);
-        return LL;
-    };
+	/*
+	 *	@param {Layer} layer musst extends Layer
+	 */
+	World.prototype.addLayer = function(layer) {
+		if (layer instanceof Layer) {
+			this.layers.push(layer);
+		} else {
+			console.error('not a Layer instance');
+		}
+	};
+	/*
+	 *	@param {Layer} layer musst extends Layer
+	 */
+	World.prototype.removeLayer = function(layer) {
+		var index = this.layers.indexOf(layer);
+		if (index > -1) {
+			this.layers.splice(index, 1);
+		}
+	};
+	//@overwrite
+	World.prototype.hasNext = function() {
+		//pointed layer exists and has min 1 entity ??
+		if (this.layers[this._layerCursor] instanceof Layer) {
+//			console.log('kann sein das es noch eins giebt',this.layers[this._layerCursor].EntityList.length)
+			if ((this._entityCursor + 1) < this.layers[this._layerCursor].EntityList.length) {
+//				console.log('da is noch eins im aktuellen layer');
+				return true;
+			} else if (this.layers[this._layerCursor + 1] instanceof Layer &&
+					   this.layers[this._layerCursor + 1].EntityList.length > 0) {
+//				console.log('im nächsten layer is eins')
+				return true;
+			}
+		}
+		return false;
+	};
+	//@overwrite
+	World.prototype.next = function() {
+		if (this.layers.length === 0) {
+			return;
+		}
 
-    World.prototype.addLayerList = function (layerList) {
-        if(this.layerLists.push(layerList)) {
-            return this.layerLists.length - 1;
-        }
-        return false;
-    };
+		return this.layers[this._layerCursor].EntityList[++this._entityCursor];
+		//set cursors to next entity [and layer] and return entity
+	};
+	//@overwrite
+	World.prototype.resetCursor = function() {
+		this._layerCursor = 0;
+		this._entityCursor = -1;
+	};
 
     return World;
 });

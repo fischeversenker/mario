@@ -1,6 +1,7 @@
 /* jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4 */
 /* global define, requestAnimFrame */
-define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/renderer', 'entities/entityManager', 'physics/physics'], function(EventManager, Input, World, Renderer, EntityManager, Physics) {
+define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/renderer', 'entities/entityManager', 'physics/physics', 'worlds/layer', 'camera'],
+	   function(EventManager, Input, World, Renderer, EntityManager, Physics, Layer, Camera) {
 
     "use strict";
     
@@ -10,11 +11,12 @@ define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/rendere
         DOM: {},
         World: {},
         mainLoopListeners: [],
-        FRAME_TIME: 500,
+        FRAME_TIME: 100,
 
         start: function(){
             Core.running = true;
             Core.lastTime = new Date().getTime();
+			Renderer.setCamera(new Camera());
             Core.mainloop();
         },
 
@@ -29,13 +31,22 @@ define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/rendere
             if(!Core.running) {
                 return;
             }
-            requestAnimFrame(function(){Core.mainloop();});
+//            requestAnimFrame(function(){Core.mainloop();});
+            requestAnimFrame(Core.mainloop.bind(this));
 
             if(Core.World !== null){
                 if(time - Core.lastTime > Core.FRAME_TIME){
                     time = new Date().getTime();
+					//render
                     Renderer.render();
+					//update
+					this.World.resetCursor();
+					while (this.World.hasNext()) {
+						var e = this.World.next();
+						e.update(time - Core.lastTime);
+					}
                     Core.lastTime = time;
+					//Core.running = false;
                 }
                 // Core.World.update(time - Core.lastTime);
             }
@@ -47,9 +58,14 @@ define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/rendere
             return w;
         },
 
+        createLayer: function(){
+            return new Layer();
+        },
+
         setActiveWorld: function(world){
             this.World = world;
-            Renderer.setWorld(this.World);
+			Renderer.setEntityList(this.World);
+//            Renderer.setWorld(this.World);
         },
 
         registerTicker: function(id, callback, ctx){
