@@ -13,6 +13,8 @@ define(function(require, exports, module){
 
     var Renderer = {
         render: function() {
+			_ctx.setTransform(1, 0, 0, 1, 0, 0);
+			_ctx.clearRect(0,0,1000,1000);
 			_renderEntitys.resetCursor();
 			var count  = 0;
 			while (_renderEntitys.hasNext()) {

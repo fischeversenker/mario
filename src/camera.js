@@ -25,6 +25,7 @@ define(function(require, exports, module){
 					this.pos.x += 3;
 					break;
 			}
+			return false;
 		}.bind(this));
 	}
 

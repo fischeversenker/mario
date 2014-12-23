@@ -11,7 +11,7 @@ define(['events/eventManager', 'events/input', 'worlds/world', 'renderer/rendere
         DOM: {},
         World: {},
         mainLoopListeners: [],
-        FRAME_TIME: 100,
+        FRAME_TIME: 10,
 
         start: function(){
             Core.running = true;
